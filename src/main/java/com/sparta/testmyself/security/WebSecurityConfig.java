@@ -1,13 +1,20 @@
-package com.sparta.testmyself;
+package com.sparta.testmyself.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    public BCryptPasswordEncoder encodePassword() {
+        return new BCryptPasswordEncoder();
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -27,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
-//                .failureUrl("user/login/error")
+                .failureUrl("/user/login/error")
                 .defaultSuccessUrl("/")	//로그인 완료되었을 때 이동할 페이지
                 .permitAll()	//허용
                 .and()

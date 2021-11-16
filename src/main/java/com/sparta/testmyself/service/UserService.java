@@ -5,6 +5,7 @@ import com.sparta.testmyself.model.User;
 import com.sparta.testmyself.model.UserRole;
 import com.sparta.testmyself.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class UserService {
     private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User registerUser(UserDto userDto) {
         String username = userDto.getUsername();
@@ -21,7 +23,7 @@ public class UserService {
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 ID가 있습니다");
         }
-        String password = userDto.getPassword();
+        String password = passwordEncoder.encode(userDto.getPassword());
         String email = userDto.getEmail();
         UserRole role = UserRole.USER;
         if(userDto.isAdmin()) {

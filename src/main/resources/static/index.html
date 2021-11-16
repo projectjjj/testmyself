@@ -1,5 +1,5 @@
 <!Doctype html>
-<html lang="ko" xmlns="http://www.w3.org/1999/html">
+<html lang="ko" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <!-- Required meta tags -->
@@ -189,6 +189,7 @@
     </div>
     <div class="bbs-body">
       <div class="posting-box">
+        <span th:text="${username}"></span><span>님 환영합니다!</span>
         <input type="text" id="name" name="name" value="병아리"/>
         <input type="textarea" id="memo" name="memo" placeholder="병아리의 외침!"/>
         <button onclick="postBbs()">save</button>
