@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title> 오늘 뭐 먹지? </title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/album/">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/mycss.css" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+
+    <!--파비콘-->
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon2.ico" />
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!-- 구글 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+
+    <script>
+        function want() {
+            let btn_val = []
+            for (let i = 0; i < 9; i++) {
+                let btnCheck = $(`input:checkbox[id="chk${i + 1}"]`)
+                if (btnCheck.is(":checked") === true) {
+                    btn_val.push(btnCheck.val())
+                }
+            }
+            console.log(btn_val)
+            $.ajax({
+                type: "POST",
+                url: "/want",
+                data: {want_give: btn_val},
+                success: function (response) {
+                    if (response['result'] === 'fail') {
+                        $("#modal-post").addClass("is-active");
+                        console.log('want');
+                    } else {
+                        let temp_html = `<div class="question-h">
+                                    <p class="question-style"> Q.2 오늘 기분은 어때요? </p>
+                                </div>
+                                <div class="button-group-in">
+                                    <input type="checkbox" id="chk1" class="select-category" value="no_time">
+                                    <label class="category" for="chk1">시간이 없어요</label>
+
+                                    <input type="checkbox" id="chk2" class="select-category" value="many_time">
+                                    <label class="category" for="chk2">시간 많아요!</label>
+
+                                    <input type="checkbox" id="chk3" class="select-category" value="perfect">
+                                    <label class="category" for="chk3">완벽한 저녁이 필요해요!</label>
+                                </div>
+                                <div class="button-group-in">
+                                    <input type="checkbox" id="chk4" class="select-category" value="needsugar">
+                                    <label class="category" for="chk4">당 떨어져요 ㅠ</label>
+
+                                    <input type="checkbox" id="chk5" class="select-category" value="stressed">
+                                    <label class="category" for="chk5">스트레스 받았어요</label>
+
+                                    <input type="checkbox" id="chk6" class="select-category" value="fatty">
+                                    <label class="category" for="chk6">기름진게 땡기네요!</label>
+                                </div>
+                                <div class="button-group-out">
+                                    <button class="button next-stage" onclick="feeling()">다음</button>
+                                    <button class="button next-stage" onclick="feeling_no()">땡기는게 없어요</button>
+                                </div>`
+                        let btnGroup = $('#button-group')
+                        btnGroup.empty()
+                        btnGroup.append(temp_html)
+
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+<header>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>오늘 뭐 먹지?</strong>
+            </a>
+        </div>
+    </div>
+</header>
+
+<!--본문-->
+<main id="wrap">
+    <div class="button-group" id="button-group">
+        <div class="question-h">
+            <p class="question-style"> Q.1 어떤 종류의 음식이 땡기시나요? </p>
+        </div>
+        <div class="button-group-in">
+            <input type="checkbox" id="chk1" class="select-category" value="korean">
+            <label class="category" for="chk1">한식</label>
+
+            <input type="checkbox" id="chk2" class="select-category" value="chinese">
+            <label class="category" for="chk2">중식</label>
+
+            <input type="checkbox" id="chk3" class="select-category" value="japanese">
+            <label class="category" for="chk3">일식</label>
+        </div>
+        <div class="button-group-in">
+            <input type="checkbox" id="chk4" class="select-category" value="western">
+            <label class="category" for="chk4">양식</label>
+
+            <input type="checkbox" id="chk5" class="select-category" value="snack">
+            <label class="category" for="chk5">분식</label>
+
+            <input type="checkbox" id="chk6" class="select-category" value="bread">
+            <label class="category" for="chk6">빵</label>
+        </div>
+        <div class="button-group-in">
+            <input type="checkbox" id="chk7" class="select-category" value="supper">
+            <label class="category" for="chk7">야식</label>
+
+            <input type="checkbox" id="chk8" class="select-category" value="fastfood">
+            <label class="category" for="chk8">패스트푸드</label>
+
+            <input type="checkbox" id="chk9" class="select-category" value="salad">
+            <label class="category" for="chk9">샐러드</label>
+        </div>
+        <div class="button-group-out">
+            <button class="button next-stage" onclick="want()">다음</button>
+            <button class="button next-stage" onclick="want_no()">땡기는게 없어요</button>
+        </div>
+    </div>
+</main>
+<footer class="text-muted py-5">
+    <div class="container">
+        <p>
+            <strong>오늘 뭐 먹지?</strong> made by
+            <a href="https://github.com/bestmealever">이거사조</a>. <br>
+            이거사조 is Team 4 in 내일배움캠프. <br>
+            Welcome to <a href="https://spartacodingclub.kr/">스파르타코딩클럽</a>.
+        </p>
+    </div>
+</footer>
+</body>
+</html>

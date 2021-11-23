@@ -10,7 +10,7 @@
   <!-- bulma CSS -->
 <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">-->
 
-  <!-- JS -->
+  <!-- JS,제이쿼리 -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
           integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -18,6 +18,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
           integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
           crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="css.css"/>
+  <script src="js.js"></script>
 
   <!-- 구글폰트 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,167 +27,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 
+
   <title>스프링으로 게시판 만들기</title>
 
   <!-- style -->
-  <style type="text/css">
-    .bbs-card {
-      background-color: #fefbed;
-      color: black;
-      width:800px;
-      margin: 20px auto 20px auto;
-      /*bbs 중앙에*/
-      border-radius: 20px;
-    }
-    .bbs-header {
-      background-color: #fadd6e;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      padding : 20px;
-    }
-    .bbs-body {
-      background-color: #fefbed;
-      font-family: 'Noto Sans KR', sans-serif;
-      font-weight: 300;
-      padding : 20px;
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-    }
-    .text-comment {
-      font-family: 'Noto Sans KR', sans-serif;
-      font-weight: 300;
-      margin: 10px 0 20px 52px;
-    }
-    .text-title {
-      font-family: 'Noto Sans KR', sans-serif;
-      font-weight: 500;
-      margin: 0;
-    }
-    .bbs-reply {
-      color:gray;
-      padding : 20px;
-    }
-    .text-reply-name {
-      font-weight: 500;
-      margin: 0;
-      padding-bottom: 10px;
-    }
-    .text-reply-comment {
-      font-weight: 300;
-      margin: 0;
-      padding-left: 54px;
-    }
-    .text-reply-date {
-      padding-left: 10px;
-      font-weight: 200;
-    }
-    .emoge {
-      width: 40px;
-      height: 40px;
-      background-image: url("images/sad.jpg");
-      background-size: contain;
-      border-radius: 50%;
-      display: inline-block;
-      margin: 0 10px 0 0;
-      vertical-align: middle;
-    }
-    .bbs-reply-text {
-      width: 90%;
-      display: inline-block;
-    }
-    .select-emogi-normal {
-      width: 40px;
-      height: 40px;
-      background-image:url('images/normal.jpg');
-      background-size: contain;
-      border-radius: 50%;
-    }
-    .select-emogi-panic {
-      width: 40px;
-      height: 40px;
-      background-image:url('images/panic.jpg');
-      background-size: contain;
-      border-radius: 50%;
-    }
-    .select-emogi-sad {
-      width: 40px;
-      height: 40px;
-      background-image:url('images/sad.jpg');
-      background-size: contain;
-      border-radius: 50%;
-    }
-    .select-emogi-angry {
-      width: 40px;
-      height: 40px;
-      background-image:url('images/angry.jpg');
-      background-size: contain;
-      border-radius: 50%;
-    }
-
-  </style>
-  <script>
-    $(document).ready(function () {
-      getBbs()
-    })
-    function getBbs(){
-      $.ajax({
-        type:"GET",
-        url:"api/memos",
-        success:function (response) {
-          for (i=0;i<response.length; i++) {
-            let card = response[i];
-            console.log(card);
-            let tempHtml = html(card);
-            $('#bbs').append(tempHtml);
-          }
-        }
-      })
-    }
-    function html(card) {
-      return `<div class="bbs-user">
-        <div class="emoge"></div>
-        <div class="bbs-reply-text">
-          <p class="text-reply-name">익명의 ${card.name}<span class="text-reply-date">${card.createdAt}</span></p>
-        </div>
-      </div>
-      <p class="text-comment">${card.memo}</p>
-
-
-    `
-    }
-    function postBbs() {
-      let name = $('#name').val()
-      let memo = $('#memo').val()
-      if (name == '') {
-        $('#name').focus();
-        alert('이름을 입력해주세유')
-        return;}
-      if (memo == '') {
-        $('#memo').focus();
-        alert('한마디 해주세유')
-        return;}
-      $.ajax({
-        type:"POST",
-        url:"/api/memos",
-        contentType:"application/json",
-        data : JSON.stringify({'name':name, 'memo':memo}),
-        success:function (response) {
-          window.location.reload();
-        }
-      })
-    }
-
-  </script>
 
 </head>
 
 <body>
-
-
-
   <article class="bbs-card">
     <div class="bbs-header">
-      <p class="text-title">병아리 고충 게시판</p>
+      <p class="text-title">병아리 게시판 한마디씩 외쳐보세요</p>
     </div>
     <div class="bbs-body">
       <div class="posting-box">
@@ -205,6 +57,20 @@
     </div>
 
   </article>
+
+<!--수정 모달-->
+  <div id="container" class="popup-container">
+    <div class="popup">
+      <button onclick="close()">
+        X
+      </button>
+      <p>수정하세요!</p>
+      <div>
+        <input type="text" id="memoModify" placeholder="메모">
+      </div>
+      <button onclick="memoModifySave()">수정하기</button>
+    </div>
+  </div>
 
 </body>
 

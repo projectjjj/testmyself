@@ -38,4 +38,10 @@ public class UserController {
         userService.registerUser(userDto);
         return "redirect:/";
     }
+    //카카오 로그인 callback
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(String code) {
+        userService.kakaoLogin(code);
+        return "redirect:/";
+    }
 }
